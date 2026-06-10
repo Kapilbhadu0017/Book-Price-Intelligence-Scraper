@@ -1,9 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd 
-import matplotlib.pyplot as plt
 import time
-import os
 
 URL = 'https://books.toscrape.com/'
 start_time = time.time()
