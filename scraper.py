@@ -6,8 +6,10 @@ import time
 import os
 
 URL = 'https://books.toscrape.com/'
+start_time = time.time()
 
 page = requests.get(URL)
+time.sleep(0.5)
 soup = BeautifulSoup(page.content, 'html.parser')
 
 navigation = soup.find('ul', class_ = 'nav nav-list')
@@ -24,34 +26,9 @@ for li in navigation.find_all('li')[1:]:
     cat_link = URL+li.find('a')['href'].strip()
     cat_dict[f'{category}'] = f'{cat_link}'
 
-# def printnexturl(url):
-#     print(url)
-#     new_page = requests.get(url)
-#     soup = BeautifulSoup(new_page.content, 'html.parser')
-#     pager = soup.find('ul', class_ = 'pager')
-#     if pager:
-#         next_link_tag = pager.find('li', class_ = 'next')
-#         if next_link_tag:
-#             if next_link_tag.find('a'):
-#                 next_link_tag = next_link_tag.find('a')
-#                 printnexturl(url[:url.rfind('/')+1]+next_link_tag['href'])
-
-# for i in cat_dict.keys():
-#     category = i
-#     url = cat_dict[i]
-#     print(url)
-#     new_page = requests.get(url)
-#     soup = BeautifulSoup(new_page.content, 'html.parser')
-#     pager = soup.find('ul', class_ = 'pager')
-#     if pager:
-#         next_link_tag = pager.find('li', class_ = 'next')
-#         if next_link_tag:
-#             if next_link_tag.find('a'):
-#                 next_link_tag = next_link_tag.find('a')
-#                 printnexturl(url[:url.rfind('/')+1]+next_link_tag['href'])
-
 def getpagedata(category, url, titles, prices, star_rating, categories, availability_list):
     new_page = requests.get(url)
+    time.sleep(0.5)
     soup = BeautifulSoup(new_page.content, 'html.parser')
     books = soup.find('ol', class_ = 'row').find_all('li')
     title = ''
@@ -102,3 +79,8 @@ df = pd.DataFrame({
 })
 
 df.to_csv('data/raw/books_raw.csv', index = False)
+print("Data scraped and saved successfully, saved at : 'data/raw/books_raw.csv'")
+
+end_time = time.time()
+elapsed_time = end_time - start_time
+print(f"Execution time: {elapsed_time} seconds")
