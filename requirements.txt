@@ -2,4 +2,3 @@ requests
 beautifulsoup4
 pandas
 matplotlib
-sqlite3
